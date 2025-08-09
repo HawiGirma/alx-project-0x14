@@ -1,30 +1,131 @@
 # alx-project-0x14
-# Movie App
 
-A simple web application leveraging **The Movie Database (TMDb) API** to fetch and display movie, TV show, and actor data.
+This project demonstrates how to read and apply API documentation effectively by integrating with the **MoviesDatabase API**.  
+The goal is to understand the API's endpoints, authentication, and response formats to use it correctly in TypeScript or JavaScript applications.
+
+---
 
 ## API Overview
 
-The Movie Database (TMDb) API provides comprehensive access to a vast entertainment metadata database, including details on movies, TV shows, actors, images, reviews, lists, and trending content. It supports powerful search capabilities and includes multilingual and community-generated data :contentReference[oaicite:0]{index=0}.
+The **MoviesDatabase API** provides developers with access to a large database of movies, TV shows, and celebrity information.  
+Key features include:
+
+- Search for movies, TV shows, or people by title or ID.
+- Retrieve detailed metadata (title, genres, release dates, posters, ratings).
+- Fetch cast and crew details for any movie or TV show.
+- Get random titles or browse through curated lists like trending and top-rated.
+- Access both images and textual descriptions.
+
+---
 
 ## Version
 
-Current stable version: **v3** of the TMDb API (with v4 available in preview) :contentReference[oaicite:1]{index=1}.
+**API Version:** `v1`  
+Reference: [MoviesDatabase API on RapidAPI](https://moviesdatabase.p.rapidapi.com/)
+
+---
 
 ## Available Endpoints
 
-Below are some primary TMDb API endpoints:
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET`  | `/titles` | Returns a list of movies and TV shows with optional filters (genre, year, etc.). |
+| `GET`  | `/titles/{id}` | Retrieves full details about a movie or TV show using its unique ID. |
+| `GET`  | `/titles/search/title/{title}` | Searches for a movie or TV show by its title text. |
+| `GET`  | `/titles/random` | Returns a random movie or TV show entry. |
+| `GET`  | `/titles/series/{id}` | Retrieves series details including seasons and episodes. |
+| `GET`  | `/titles/{id}/cast` | Retrieves cast members for the given title. |
+| `GET`  | `/titles/{id}/crew` | Retrieves crew members for the given title. |
 
-- **`GET /search/movie`** – Search for movies by title :contentReference[oaicite:2]{index=2}.  
-- **`GET /movie/{movie_id}`** – Retrieve detailed information about a specific movie :contentReference[oaicite:3]{index=3}.  
-- **`GET /movie/{movie_id}/credits`** – Fetch cast and crew, such as directors and actors :contentReference[oaicite:4]{index=4}.  
-- **`POST /movie/{movie_id}/rating`** – Submit or update a rating for a specific movie :contentReference[oaicite:5]{index=5}.  
-- **`DELETE /movie/{movie_id}/rating`** – Remove a previously submitted rating :contentReference[oaicite:6]{index=6}.  
+---
 
 ## Request and Response Format
 
-### Example Request: Get Movie Details
+### Example Request – Search by Title
+```http
+GET https://moviesdatabase.p.rapidapi.com/titles/search/title/inception
+X-RapidAPI-Key: YOUR_API_KEY
+X-RapidAPI-Host: moviesdatabase.p.rapidapi.com
+Example Response
+json
+Copy
+Edit
+{
+  "results": [
+    {
+      "id": "tt1375666",
+      "titleText": { "text": "Inception" },
+      "releaseYear": { "year": 2010 },
+      "primaryImage": {
+        "url": "https://m.media-amazon.com/images/M/MV5BMm.jpg",
+        "caption": { "plainText": "Inception Poster" }
+      }
+    }
+  ]
+}
+```
+### Notes:
+
+All responses are in JSON format.
+
+Optional query parameters can be used to refine results (genre, year, limit, etc.).
+
+
+
+## Authentication
+
+The MoviesDatabase API is hosted on RapidAPI.  
+To use it, you must:
+
+- Create a free account at RapidAPI.
+- Subscribe to the MoviesDatabase API.
+- Include these headers with every request:
 
 ```http
-GET https://api.themoviedb.org/3/movie/27205
-Authorization: Bearer YOUR_ACCESS_TOKEN
+X-RapidAPI-Key: YOUR_API_KEY
+X-RapidAPI-Host: moviesdatabase.p.rapidapi.com
+```
+
+
+## Error Handling
+Common error responses:
+
+401 Unauthorized – Missing or invalid API key.
+
+```json
+
+{ "message": "You are not subscribed to this API." }
+```
+429 Too Many Requests – Rate limit exceeded.
+
+```json
+{ "message": "You have exceeded your monthly quota." }
+```
+
+
+## Best Practices:
+
+- Always check HTTP status codes.
+
+- Implement retries for temporary failures.
+
+For 429 errors, wait before retrying to avoid bans.
+
+
+
+## Usage Limits and Best Practices
+- Rate Limits: Depend on your RapidAPI subscription tier (free plans may allow ~500 requests/month).
+
+### Tips:
+
+- Cache frequent requests to save API calls.
+
+- Request only necessary fields to improve performance.
+
+- Use pagination when working with large datasets.
+
+- Monitor API usage in your RapidAPI dashboard.
+
+# Resources
+- API Documentation: https://moviesdatabase.p.rapidapi.com/
+- RapidAPI: https://rapidapi.com/
